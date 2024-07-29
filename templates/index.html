@@ -38,20 +38,27 @@
                 <button class="main-btn"><a href="#">Get Started</a></button>
             </div>
             <div class="main__img--container">
-                <img src="{{ url_for('static', filename='images/pic1.jpg') }}" alt="pic1" id="main__img"/>
+                <img src="{{ url_for('static', filename='images/pic2.jpg') }}" alt="pic1" id="main__img"/>
             </div>
         </div>
     </div>
-        <script src="app.js"></script>
+    <div class="overlay" id="overlay">
+        <div class="arrow-container" id="arrow-container">
+            <span class="arrow-left">&#8592;</span>
+        </div>
+        <div class="login-container">
+            <span class="close-btn" id="close-btn">&times;</span>
+            <h2>Login to Your Account</h2>
+            <form action="#" method="POST">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
 
-<!---
-
-<h1>Home Loan Management System</h1>
-    <form action="/HomeLoan">
-        <input type="text" name="amount" id="amount" placeholder="Enter amount"/>
-        <button> type="submit">Submit</button>
-    </form>
-
--->
