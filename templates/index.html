@@ -37,28 +37,35 @@
                 <p>Sign in to customise your account!</p>
                 <button class="main-btn"><a href="#">Get Started</a></button>
             </div>
+            <!--
             <div class="main__img--container">
                 <img src="{{ url_for('static', filename='images/pic2.jpg') }}" alt="pic1" id="main__img"/>
             </div>
+            -->
+            <div class="form">
+                <h2>Login</h2>
+                <input type="username" name="username" placeholder="Enter Email Here">
+                <input type="password" name="password" placeholder="Enter Password Here">
+                <button class="btnn"><a href="#">Login</a></button>
+
+                <p class="link">Don't have an account?<br>
+                <a href="#">Sign up </a>here</a></p>
+                <p class="liw">Login in with</p>
+                
+                <div class="icon">
+                    <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+                    <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+                    <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+                    <a href="#"><ion-icon name="logo-google"></ion-icon></a>
+                    <a href="#"><ion-icon name="logo-skype"></ion-icon></a>
+                </div>
+
+            </div>
         </div>
     </div>
-    <div class="overlay" id="overlay">
-        <div class="arrow-container" id="arrow-container">
-            <span class="arrow-left">&#8592;</span>
-        </div>
-        <div class="login-container">
-            <span class="close-btn" id="close-btn">&times;</span>
-            <h2>Login to Your Account</h2>
-            <form action="#" method="POST">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    </div>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="/static/app.js"></script>
+
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </body>
 </html>
 

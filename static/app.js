@@ -10,14 +10,3 @@ menu.addEventListener('click', function() {
     menuLinks.classList.toggle('active');
 })
 
-getStartedBtn.addEventListener('click', function() {
-    overlay.classList.add('active');
-});
-
-signInBtn.addEventListener('click', function() {
-    overlay.classList.add('active');
-});
-
-closeBtn.addEventListener('click', function() {
-    overlay.classList.remove('active');
-});
