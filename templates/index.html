@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@0;1&display=swap" rel="stylesheet">
-    <title>Home Loan Management System</title>
+    <title>Starting Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,19 +44,26 @@
             -->
             <div class="form">
                 <h2>Login</h2>
-                <input type="username" name="username" placeholder="Enter Email Here">
-                <input type="password" name="password" placeholder="Enter Password Here">
-                <button class="btnn"><a href="#">Login</a></button>
+                {% if error %}
+                    <p style=" color: red;">{{ error }}</p>
+                {% endif %}
+
+                <form method="POST" action="/">
+                    <input type="text" name="username" placeholder="Enter Email Here" required>
+                    <input type="password" name="password" placeholder="Enter Password Here" required>
+                    <button class="btnn" type="submit">Login</button>
+                </form>
+                
 
                 <p class="link">Don't have an account?<br>
-                <a href="#">Sign up </a>here</a></p>
+                    <a href="{{ url_for('signup') }}">Sign up</a> here</p>
                 <p class="liw">Login in with</p>
                 
                 <div class="icon">
                     <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
                     <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
                     <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
-                    <a href="#"><ion-icon name="logo-google"></ion-icon></a>
+                    <a href="#"><ion-icon qname="logo-google"></ion-icon></a>
                     <a href="#"><ion-icon name="logo-skype"></ion-icon></a>
                 </div>
 
