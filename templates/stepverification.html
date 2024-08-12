@@ -3,9 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@0;1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stepverification.css') }}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <title>Two factor authentication</title>
 </head>
 <body>
-    <h1>Step verification</h1>
+
+    <section id="main-site">
+        <div class="glass text-center">
+            <div class="title">
+                <h1 class="font-poppins text-white py-3">Step verification</h1>
+
+                <p class="font-poppins text-light">We've sent a verification code to</p>
+                <p class="font-poppins text-light">"Email"</p>
+            </div>
+
+            <form action="/dashboard" method="GET" class="py-2">
+                <h4 class="font-poppins text-light">Enter your OPT code</h4>
+
+                <div class="col py-1">
+                    <input type="text" class="form-control" maxlength="1">
+                    <input type="text" class="form-control" maxlength="1">
+                    <input type="text" class="form-control" maxlength="1">
+                    <input type="text" class="form-control" maxlength="1">
+                </div>
+
+                <div class="col">
+                    <button type="submit" class="btn">Verify</button>
+                </div>
+
+                <div class="py-1">
+                    <p class="font-poppins text-light">Not received your code?</p>
+                    <p class="font-poppins text-light"><a href="#" class="link">Resend</a></p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <div class="nav-container">
+        <nav class="navbar">
+            <h1 id="navbar-logo">Home Loan Management</h1>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-links">DashBoard</a></li>
+                <li><a href="#" class="nav-links">Search</a></li>
+                <li><a href="#" class="nav-links">Help</a></li>
+                <li><a href="#" class="nav-links">Feedback</a></li>
+                <li><a href="#" class="nav-links nav-links-btn">Sign up</a></li>
+            </ul>
+        </nav>
+    </div>
+    
 </body>
 </html>

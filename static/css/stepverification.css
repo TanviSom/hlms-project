@@ -1,0 +1,170 @@
+
+
+*>*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+body{
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    
+}
+
+#main-site{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.text-center{
+    text-align: center;
+}
+
+.py-1{
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.py-2{
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+.py-3{
+    padding-bottom: 1em;
+}
+
+.font-roboto{
+    font-family: 'Roboto', sans-serif;
+}
+
+.font-poppins{
+    font-family: 'Poppings', sans-serif;
+}
+
+.text-white{
+    color: white;
+}
+
+.text-light{
+    color: #dee2e6;
+}
+
+.link{
+    text-decoration: none;
+    color: red;
+}
+
+.glass{
+    max-width: 550px;
+    width: 100%;
+    padding: 65px 90px 45px;
+    background: rgb(255, 255, 255, 0.1);
+    box-shadow: 10px 10px 80px rgb(0, 0, 0, 0.3);
+}
+  
+.glass .title h1{
+    font-size: 35px;
+}
+
+.glass form .form-control{
+    width: 80px;
+    padding: .3em.1em;
+    font-size: 25px;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.glass form .col .btn {
+    width: 90%;
+    padding: 0.6em 1em;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    background-color: red;
+    color: #efefef;
+    border: none;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+#navbar-logo {
+    font-size: 1.5em;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 2em;
+}
+
+.nav-links {
+    color: white;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+}
+
+.nav-links-btn {
+    background-color: red;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    color: white;
+}
+
+.menu-toggle {
+    display: none; /* Hide by default */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px 0;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links-btn:hover {
+        border: none;
+        padding: 0;
+        border-radius: 0;
+        background-color: var(--brightred);
+        color: var(--white);
+        transition: all 0.4s ease-out;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: flex; /* Show on small screens */
+    }
+}
