@@ -23,7 +23,7 @@
 
 .navbar {
     display: grid;
-    grid-template-columns: 0.2fr auto 1fr;
+    grid-template-columns: 0.2fr auto auto;
     align-items: center;
     height: 80px;
     width: 90%;
