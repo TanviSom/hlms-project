@@ -50,5 +50,9 @@ def signup():
 def stepverification(usr):
     return render_template('stepverification.html', usr=usr)
 
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    return render_template('dashboard.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
