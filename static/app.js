@@ -10,3 +10,17 @@ menu.addEventListener('click', function() {
     menuLinks.classList.toggle('active');
 })
 
+
+function setActionForm(action) {
+    let form = document.getElementById("auth-form");
+    if (action === 'Login') {
+        form.action = "/"; 
+        form.method = "post";
+        form.submit();
+    } else if (action === 'Register') {
+        form.action = "/signup"; 
+        form.method = "post";
+        form.submit();
+    }
+}
+

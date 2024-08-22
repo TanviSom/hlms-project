@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-container">
+        <aside id="sidebar">
+            <div class="sidebar-title">
+                <div class="sidebar-brand">
+                    <span class="material-symbols-outlined">inventory</span> {{username}}'s Inventory
+                </div>
+                <span class="material-symbols-outlined" onclick="closeSidebar()">close</span>
+            </div>
+
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                    <a href="{{url_for('profile')}}" class="material-symbols-outlined">account_circle</a> Profile
+                </li>
+                <li class="sidebar-list-item">
+                    <span class="material-symbols-outlined">lock</span> Password
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="{{url_for('logout')}}" class="material-symbols-outlined">logout</a> Logout
+                </li>
+            </ul>
+        </aside>
+    <div class="container">
+        <div class="account">
+            <div class="account-header">
+                <h1 class="account-title">Account Settings</h1>
+                <div class="btn-container">
+                    <button class="btn-cancel">Cancel</button>
+                    <button class="btn-save">Save</button>
+                </div>
+            </div>
+            <div class="account-edit">
+                <div class="input-container">
+                    <label>First Name</label>
+                    <input type="text" placeholder="First Name">
+                </div>
+                <div class="input-container">
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Last Name">
+                </div>
+            </div>
+
+            <div class="account-edit">
+                <div class="input-container">
+                    <label>Email</label>
+                    <input type="email" placeholder="Email">
+                </div>
+                <div class="input-container">
+                    <label>Phone Number</label>
+                    <input type="text" placeholder="Phone Number">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

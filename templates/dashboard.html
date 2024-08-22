@@ -33,14 +33,14 @@
         <aside id="sidebar">
             <div class="sidebar-title">
                 <div class="sidebar-brand">
-                    <span class="material-symbols-outlined">inventory</span> Name's Inventory
+                    <span class="material-symbols-outlined">inventory</span> {{username}}'s Inventory
                 </div>
                 <span class="material-symbols-outlined" onclick="closeSidebar()">close</span>
             </div>
 
             <ul class="sidebar-list">
                 <li class="sidebar-list-item">
-                    <span class="material-symbols-outlined">account_circle</span> Profile
+                    <a href="{{url_for('profile')}}" class="material-symbols-outlined">account_circle</a> Profile
                 </li>
                 <li class="sidebar-list-item">
                     <span class="material-symbols-outlined">compare_arrows</span> Comparison Tool
@@ -52,7 +52,7 @@
                     <span class="material-symbols-outlined">ios_share</span> Export and Share
                 </li>
                 <li class="sidebar-list-item">
-                    <span class="material-symbols-outlined">logout</span> Logout
+                    <a href="{{url_for('logout')}}" class="material-symbols-outlined">logout</a> Logout
                 </li>
             </ul>
         </aside>
