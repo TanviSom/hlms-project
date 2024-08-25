@@ -64,6 +64,10 @@ def login():
 def profile():
     return render_template('profile.html')
 
+@app.route('/password')
+def password():
+    return render_template('password.html')
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -128,6 +132,16 @@ def result():
         return render_template("result.html", result="Success!")
     else:
         return render_template("result.html", result="Failure.")
+    
+@app.route("/comparison")
+def comparison():
+    return render_template('comparison.html')
+
+@app.route("/ammortisation")
+def ammortisation():
+    return render_template('ammortisation.html')
+    
+
 
 if __name__ == "__main__":
     with app.app_context():
