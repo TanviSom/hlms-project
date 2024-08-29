@@ -43,7 +43,13 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-
+headings = ("Payments", "Payment Amount", "Interest Paid", "Principle Reduction", "Loan Balance")
+data= (
+    ("0", "-", "-", "-", "20,000"),
+    ("1", "$1000", "-", "-", "20,000"),
+    ("2", "$1000", "-", "-", "20,000"),
+    ("3", "$1000", "-", "-", "20,000"),
+)
 
 @app.route('/', methods=["GET", "POST"])
 def login():
@@ -139,7 +145,7 @@ def comparison():
 
 @app.route("/ammortisation")
 def ammortisation():
-    return render_template('ammortisation.html')
+    return render_template('ammortisation.html', headings= headings, data=data)
 
 @app.route("/share")
 def share():
@@ -150,3 +156,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+

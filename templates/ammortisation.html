@@ -44,12 +44,31 @@
                 <button class="calculate-btn">Calculate</button>
             </div>
 
-            <div class="right">Chart</div>
+            <div class="right">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js"></script>
+    <table class="table">
+        <tr class="table__header">
+            {% for header in headings %}
+            <th class="table__cell">{{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in data %}
+        <tr class="table__row">
+            {%for cell in row %}
+            <td class="table__cell">{{ cell }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="{{ url_for('static', filename='ammortisation.js') }}"></script>
+
 </body>
 </html>

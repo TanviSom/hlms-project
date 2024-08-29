@@ -85,6 +85,29 @@
     margin: 24px 0;
 }
 
+.loan-calculator .right {
+    width: 45%;
+}
+
+.table {
+    border-spacing: 0;
+    margin: 1rem;
+    background-color: #f5f5f5;
+}
+
+.table__row:nth-child(even) {
+    background-color: #e5e5e5;
+}
+
+.table__header {
+    text-align: left;
+}
+
+.table__cell {
+    padding: 8px;
+}
+
+
 @media (max-width: 650px) {
     .loan-calculator {
         width: 90%;
