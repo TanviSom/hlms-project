@@ -4,25 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ammortisation.css') }}">
-    <title>Amortisation</title>
+    <title>Amortisation Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
     <div class="loan-calculator">
         <div class="top">
             <h2>Amortisation Tool</h2>
-            <form action="#">
+            <form action="{{ url_for('ammortisation') }}" method="POST">
                 <div class="group">
                     <div class="title">Amount</div>
-                    <input type="text" class="loan-amount" value="30000">
+                    <input type="text" name="loan_amount" class="loan-amount" value="{{ request.form.loan_amount or '30000' }}">
                 </div>
                 <div class="group">
                     <div class="title">Interest Rate</div>
-                    <input type="text" class="interest-rate" value="7.5">
+                    <input type="text" name="interest_rate" class="interest-rate" value="{{ request.form.interest_rate or '7.5' }}">
                 </div>
                 <div class="group">
-                    <div class="title">Tenure (in months)</div>
-                    <input type="text" class="loan-tenure" value="120">
+                    <div class="title">Tenure</div>
+                    <input type="text" name="loan_tenure" class="loan-tenure" value="{{ request.form.loan_tenure or '120' }}">
                 </div>
+                <button type="submit" class="calculate-btn">Calculate</button>
             </form>
         </div>
 
@@ -30,18 +32,16 @@
             <div class="left">
                 <div class="loan-emi">
                     <h3>Loan EMI</h3>
-                    <div class="value">123</div>
+                    <div class="value">{{ emi }}</div>
                 </div>
                 <div class="total-interest">
                     <h3>Total Interest Payable</h3>
-                    <div class="value">342</div>
+                    <div class="value">{{ total_interest }}</div>
                 </div>
                 <div class="total-amount">
                     <h3>Total Amount</h3>
-                    <div class="value">123423</div>
+                    <div class="value">{{ total_amount }}</div>
                 </div>
-
-                <button class="calculate-btn">Calculate</button>
             </div>
 
             <div class="right">
@@ -50,25 +50,34 @@
         </div>
     </div>
 
+    <div class="title">
+        <h2>Amortisation Table</h2>
+    </div>
+
+    <div class="button">
+        <a href="{{url_for('dashboard')}}" class="material-symbols-outlined">dashboard</a> Dashboard
+    </div>
+
     <table class="table">
-        <tr class="table__header">
-            {% for header in headings %}
-            <th class="table__cell">{{ header }}</th>
+        <thead>
+            <tr class="table__header">
+                {% for header in headings %}
+                <th class="table__cell">{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr class="table__row">
+                {% for cell in row %}
+                <td class="table__cell">{{ cell }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% for row in data %}
-        <tr class="table__row">
-            {%for cell in row %}
-            <td class="table__cell">{{ cell }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-        
+        </tbody>
     </table>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script src="{{ url_for('static', filename='ammortisation.js') }}"></script>
-
 </body>
 </html>

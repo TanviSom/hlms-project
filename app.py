@@ -143,9 +143,36 @@ def result():
 def comparison():
     return render_template('comparison.html')
 
-@app.route("/ammortisation")
+@app.route("/ammortisation", methods=["GET", "POST"])
 def ammortisation():
-    return render_template('ammortisation.html', headings= headings, data=data)
+    if request.method == "POST":
+        loan_amount = float(request.form.get("loan_amount"))
+        annual_rate = float(request.form.get("interest_rate"))
+        tenure_months = int(request.form.get("loan_tenure"))
+        
+        # Monthly interest rate
+        monthly_rate = annual_rate / 12 / 100
+        # EMI formula: [P * r * (1+r)^n] / [(1+r)^n – 1]
+        emi = loan_amount * monthly_rate * ((1 + monthly_rate) ** tenure_months) / ((1 + monthly_rate) ** tenure_months - 1)
+        
+        balance = loan_amount
+        data = []
+        
+        for i in range(1, tenure_months + 1):
+            interest = balance * monthly_rate
+            principal = emi - interest
+            balance -= principal
+            data.append((i, f"${emi:,.2f}", f"${interest:,.2f}", f"${principal:,.2f}", f"${balance:,.2f}"))
+        
+        headings = ("Payment Number", "Payment Amount", "Interest Paid", "Principal Paid", "Remaining Balance")
+        
+        # Summary Data
+        total_payment = emi * tenure_months
+        total_interest = total_payment - loan_amount
+        return render_template('ammortisation.html', headings=headings, data=data, emi=f"${emi:,.2f}", total_interest=f"${total_interest:,.2f}", total_amount=f"${total_payment:,.2f}")
+    
+    # Default data for GET requests
+    return render_template('ammortisation.html', headings=[], data=[])
 
 @app.route("/share")
 def share():
