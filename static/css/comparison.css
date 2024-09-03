@@ -1,0 +1,160 @@
+/* Style for the entire pricing item */
+.pricing-item {
+    position: relative;
+    box-shadow: 0 1px 6px rgba(60, 64, 67, 0.3);
+    border-radius: 8px;
+    background-color: #c31515;
+    width: 256px;
+    margin: 12px;
+    height: 400px; /* Adjusted height */
+    font-size: 14px;
+}
+
+/* Inner container styling */
+.pricing-item__inner-container {
+    background: #ffffff;
+    margin: 4px;
+    border-radius: 4px;
+    height: calc(100% - 8px);
+}
+
+/* Dropdown for selecting banks */
+.pricing-item__top-part {
+    padding-top: 20px;
+    text-align: center;
+}
+
+/* Dropdown label styling */
+.pricing-item__top-part label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Dropdown selection styling */
+.pricing-item__top-part select {
+    width: 90%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Features list styling */
+.pricing-item__features-list {
+    margin: 20px 8px;
+    text-align: center;
+}
+
+/* Individual feature styling */
+.pricing-item__feature {
+    padding: 10px 0;
+    font-size: 15px;
+}
+
+/* Container for pricing items */
+.pricing-plans {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 120px;
+}
+
+/* Button styling */
+.button {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: #174ea6;
+    border-radius: 4px;
+    min-width: 143px;
+    min-height: 36px;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.button--primary {
+    color: #fff;
+    background: #1a73e8;
+}
+
+.button:hover {
+    box-shadow: none;
+    outline: 0;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(26, 115, 232, 0.04);
+}
+
+.button--primary:hover {
+    background: #1c66ca;
+}
+
+/* Styling for the "Dashboard" button */
+.button1 {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    padding: 8px 32px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    margin: 24px 0;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+/* Title styling */
+.title h1 {
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.title p {
+    text-align: center;
+    color: rgb(125, 9, 9);
+    margin-top: 10px;
+}
+
+/* Adjust the dropdown menus */
+.dropdown, .dropdown1, .dropdown2, .dropdown3 {
+    position: relative;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.dropdown select, .dropdown1 select, .dropdown2 select, .dropdown3 select {
+    width: 90%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Adjust the button positioning */
+.button-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Adjust button styling for comparison */
+.button-container .button--primary {
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+}
+
+/* Hide the unused dropdowns */
+.dropdown .content,
+.dropdown1 .content1,
+.dropdown2 .content2,
+.dropdown3 .content3 {
+    display: none;
+}
+
+.pricing-item.best {
+    border: 4px solid green;
+}

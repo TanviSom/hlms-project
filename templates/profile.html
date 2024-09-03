@@ -42,29 +42,35 @@
                 <h1 class="account-title">Account Settings</h1>
                 <div class="btn-container">
                     <button class="btn-cancel">Cancel</button>
-                    <button class="btn-save">Save</button>
                 </div>
             </div>
-            <div class="account-edit">
-                <div class="input-container">
-                    <label>First Name</label>
-                    <input type="text" placeholder="First Name">
+            <form method="POST" action="{{ url_for('profile') }}">
+                <div class="account-edit">
+                    <div class="input-container">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="First Name">
+                    </div>
+                    <div class="input-container">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Last Name">
+                    </div>
                 </div>
-                <div class="input-container">
-                    <label>Last Name</label>
-                    <input type="text" placeholder="Last Name">
+            
+                <div class="account-edit">
+                    <div class="input-container">
+                        <label>Email</label>
+                        <input type="email" name="email" value="{{ user.Email }}" placeholder="Email" readonly>
+                    </div>
+                    <div class="input-container">
+                        <label>Phone Number</label>
+                        <input type="text" name="phone_number" value="{{ user.phone_number }}" placeholder="Phone Number">
+                    </div>
                 </div>
-            </div>
-
-            <div class="account-edit">
-                <div class="input-container">
-                    <label>Email</label>
-                    <input type="email" placeholder="Email">
+            
+                <div class="btn-container">
+                    <button type="submit" class="btn-save">Save</button>
                 </div>
-                <div class="input-container">
-                    <label>Phone Number</label>
-                    <input type="text" placeholder="Phone Number">
-                </div>
+            </form>
             </div>
         </div>
     </div>

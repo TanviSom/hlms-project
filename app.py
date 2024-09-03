@@ -1,23 +1,16 @@
-from flask import Flask, render_template, url_for, request, redirect, session
+from flask import Flask, render_template, url_for, request, redirect, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
-import socket
-from flask_mail import Mail, Message
 import random
-import os
-
-def generate_otp(length=4):
-    otp = ''.join([str(random.randint(0, 9)) for _ in range(length)])
-    return otp
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
-mail = Mail(app)
 app.secret_key = "your secret key"
 app.config['SECRET_KEY'] = 'skdjhfskjdhf skdfjh sdkjfh'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'homeloanmanagementsystemhmls@gmail.com'
@@ -26,30 +19,27 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
 
 mail = Mail(app)
-
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
+def generate_otp(length=4):
+    return ''.join([str(random.randint(0, 9)) for _ in range(length)])
+
+
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key= True)
-    Email = db.Column(db.String(50), unique= True, nullable= False)
-    password_hash = db.Column(db.String(150), nullable= False)
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(50), nullable=True)
+    last_name = db.Column(db.String(50), nullable=True)
+    phone_number = db.Column(db.String(20), nullable=True)
+    Email = db.Column(db.String(50), unique=True, nullable=False)
+    password_hash = db.Column(db.String(150), nullable=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
-    def check_password(self,password):
+    def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
-
-headings = ("Payments", "Payment Amount", "Interest Paid", "Principle Reduction", "Loan Balance")
-data= (
-    ("0", "-", "-", "-", "20,000"),
-    ("1", "$1000", "-", "-", "20,000"),
-    ("2", "$1000", "-", "-", "20,000"),
-    ("3", "$1000", "-", "-", "20,000"),
-)
 
 @app.route('/', methods=["GET", "POST"])
 def login():
@@ -58,21 +48,36 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(Email=email).first()
         if user and user.check_password(password):
-            session['username'] = email 
+            session['username'] = email
             return redirect(url_for('stepverification', usr=email))
         else:
             return render_template("index.html", error="Invalid credentials.")
     return render_template("index.html")
 
 
-
-@app.route('/profile')
+@app.route('/profile', methods=["GET", "POST"])
 def profile():
-    return render_template('profile.html')
+    if "username" not in session:
+        return redirect(url_for('login'))
+    
+    user = User.query.filter_by(Email=session['username']).first()
+    
+    if request.method == "POST":
+        user.first_name = request.form.get('first_name')
+        user.last_name = request.form.get('last_name')
+        user.Email = request.form.get('email')
+        user.phone_number = request.form.get('phone_number')
+        
+        db.session.commit()
+        return redirect(url_for('profile'))
+    
+    return render_template('profile.html', user=user)
+
 
 @app.route('/password')
 def password():
     return render_template('password.html')
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -105,7 +110,7 @@ def stepverification(usr):
             return redirect(url_for('dashboard'))
         else:
             return render_template('stepverification.html', usr=usr, error="Invalid OTP.")
-    
+
     otp = generate_otp()
     session['otp'] = otp
 
@@ -116,18 +121,21 @@ def stepverification(usr):
 
     return render_template('stepverification.html', usr=usr)
 
+
 @app.route('/dashboard')
 def dashboard():
     if "username" in session:
         return render_template("dashboard.html", username=session['username'])
     return redirect(url_for('login'))
 
+
 @app.route("/logout")
 def logout():
     session.pop('username', None)
     return render_template("index.html")
 
-@app.route("/result", methods= ['POST', 'GET'])
+
+@app.route("/result", methods=['POST', 'GET'])
 def result():
     if request.method == "POST":
         email = request.form.get("Email")
@@ -138,10 +146,62 @@ def result():
         return render_template("result.html", result="Success!")
     else:
         return render_template("result.html", result="Failure.")
-    
-@app.route("/comparison")
+
+BANK_RATES = {
+    "Commonwealth Bank": 3.5,
+    "AMP Bank": 4.0,
+    "ANZ": 3.8,
+    "NAB": 3.7,
+    "Bank of Queensland": 3.4,
+    "Suncorp Bank": 3.9,
+    "Bankwest": 3.6,
+    "Bendigo Bank": 4.1,
+    "Macquarie Bank": 3.9,
+    "Westpac": 3.8
+}
+
+
+@app.route('/comparison', methods=['GET', 'POST'])
 def comparison():
-    return render_template('comparison.html')
+    selected_banks = []
+    bank_rates = []
+    monthly_payments = []
+    best_bank_index = None
+
+    if request.method == 'POST':
+        loan_amount = float(request.form.get('loan_amount', 0))
+        tenure_years = int(request.form.get('tenure', 0))
+        tenure_months = tenure_years * 12
+
+        for i in range(4):
+            bank_name = request.form.get(f'bank{i}')
+            if bank_name:
+                rate = BANK_RATES.get(bank_name, 0)
+                if loan_amount > 0 and tenure_months > 0 and rate > 0:
+                    selected_banks.append(bank_name)
+                    bank_rates.append(rate)
+                    monthly_payment = calculate_monthly_payment(loan_amount, rate, tenure_months)
+                    monthly_payments.append(monthly_payment)
+                else:
+                    selected_banks.append(None)
+                    bank_rates.append(None)
+                    monthly_payments.append(None)
+
+        if monthly_payments and any(monthly_payments):
+            best_bank_index = monthly_payments.index(min(filter(None, monthly_payments)))
+
+    return render_template('comparison.html', selected_banks=selected_banks, bank_rates=bank_rates, monthly_payments=monthly_payments, best_bank_index=best_bank_index)
+
+def calculate_monthly_payment(loan_amount, annual_rate, tenure_months):
+    if tenure_months == 0:
+        return 0  # or handle this case as you see fit
+    
+    monthly_rate = annual_rate / 12 / 100
+    if monthly_rate == 0:  # To avoid division by zero
+        return loan_amount / tenure_months
+    
+    return (loan_amount * monthly_rate) / (1 - (1 + monthly_rate) ** -tenure_months)
+
 
 @app.route("/ammortisation", methods=["GET", "POST"])
 def ammortisation():
@@ -149,39 +209,40 @@ def ammortisation():
         loan_amount = float(request.form.get("loan_amount"))
         annual_rate = float(request.form.get("interest_rate"))
         tenure_months = int(request.form.get("loan_tenure"))
-        
+
         # Monthly interest rate
         monthly_rate = annual_rate / 12 / 100
         # EMI formula: [P * r * (1+r)^n] / [(1+r)^n – 1]
         emi = loan_amount * monthly_rate * ((1 + monthly_rate) ** tenure_months) / ((1 + monthly_rate) ** tenure_months - 1)
-        
+
         balance = loan_amount
         data = []
-        
+
         for i in range(1, tenure_months + 1):
             interest = balance * monthly_rate
             principal = emi - interest
             balance -= principal
             data.append((i, f"${emi:,.2f}", f"${interest:,.2f}", f"${principal:,.2f}", f"${balance:,.2f}"))
-        
+
         headings = ("Payment Number", "Payment Amount", "Interest Paid", "Principal Paid", "Remaining Balance")
-        
+
         # Summary Data
         total_payment = emi * tenure_months
         total_interest = total_payment - loan_amount
-        return render_template('ammortisation.html', headings=headings, data=data, emi=f"${emi:,.2f}", total_interest=f"${total_interest:,.2f}", total_amount=f"${total_payment:,.2f}")
-    
+        return render_template('ammortisation.html', headings=headings, data=data, emi=f"${emi:,.2f}",
+                               total_interest=f"${total_interest:,.2f}", total_amount=f"${total_payment:,.2f}")
+
     # Default data for GET requests
     return render_template('ammortisation.html', headings=[], data=[])
 
+
 @app.route("/share")
 def share():
-    return render_template('share.html')    
+    return render_template('share.html')
 
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
 

@@ -2,10 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>comparison</title>
+    <title>Comparison Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/comparison.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
-    <h1>Comparison page</h1>
+    <div class="title">
+        <h1>Comparison Tool</h1>
+        <p>Compare between multiple banks of your choice!</p>
+    </div>
+
+    <form action="{{ url_for('comparison') }}" method="POST">
+        <div class="input-fields">
+            <label for="loan_amount">Home Loan Amount:</label>
+            <input type="number" id="loan_amount" name="loan_amount" required>
+            <label for="tenure">Tenure (years):</label>
+            <input type="number" id="tenure" name="tenure" required>
+        </div>
+
+        <div class="pricing-plans">
+            {% for i in range(4) %}
+            <div class="pricing-item" id="pricing-item-{{ i }}">
+                <div class="pricing-item__inner-container">
+                    <div class="pricing-item__top-part">
+                        <label for="bank{{ i }}">Choose Bank {{ i + 1 }}:</label>
+                        <select name="bank{{ i }}" id="bank{{ i }}">
+                            <option value="">Select a bank</option>
+                            <option value="Commonwealth Bank">Commonwealth Bank</option>
+                            <option value="AMP Bank">AMP Bank</option>
+                            <option value="ANZ">ANZ</option>
+                            <option value="NAB">NAB</option>
+                            <option value="Bank of Queensland">Bank of Queensland</option>
+                            <option value="Suncorp Bank">Suncorp Bank</option>
+                            <option value="Bankwest">Bankwest</option>
+                            <option value="Bendigo Bank">Bendigo Bank</option>
+                            <option value="Macquarie Bank">Macquarie Bank</option>
+                            <option value="Westpac">Westpac</option>
+                        </select>
+                    </div>
+                    <div class="pricing-item__bottom-part">
+                        <div class="pricing-item__features-list">
+                            {% if selected_banks[i] %}
+                            <div class="pricing-item__feature">Selected: {{ selected_banks[i] }}</div>
+                            <div class="pricing-item__feature">Interest Rate: {{ bank_rates[i] }}%</div>
+                            <div class="pricing-item__feature">Monthly Payment: ${{ monthly_payments[i] }}</div>
+                            {% else %}
+                            <div class="pricing-item__feature">No bank selected</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="button button--primary">Compare</button>
+        </div>
+    </form>
+
+    <div class="button1">
+        <a href="{{ url_for('dashboard') }}" class="material-symbols-outlined">dashboard</a> Dashboard
+    </div>
+
+    <script src="{{ url_for('static', filename='comparison.js') }}"></script>
 </body>
 </html>
