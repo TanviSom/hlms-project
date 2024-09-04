@@ -112,6 +112,9 @@ body {
 
 .btn-container {
     margin-right: 5px;
+    left: 570px;
+    position: absolute;
+    top: 65px;
 }
 
 .btn-cancel {

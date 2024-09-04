@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, session, jsonify
+from flask import Flask, render_template, url_for, request, redirect, session, jsonify, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import timedelta
@@ -47,7 +47,7 @@ def login():
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(Email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             session['username'] = email
             return redirect(url_for('stepverification', usr=email))
@@ -58,26 +58,71 @@ def login():
 
 @app.route('/profile', methods=["GET", "POST"])
 def profile():
+    # Check if the user is logged in
+    if "username" not in session:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+
+    user = User.query.filter_by(email=session['username']).first()
+    
+    if not user:
+        session.pop('username', None)
+        return redirect(url_for('login'))  # Additional check to handle missing user
+
+    if request.method == "POST":
+        # Extract form data
+        new_email = request.form.get('email', user.email)
+
+        # Check if the new email is already in use by another user
+        if new_email != user.email and User.query.filter_by(email=new_email).first():
+            flash('Email is already in use by another account.', 'danger')
+            return redirect(url_for('profile'))
+
+        # Update user details
+        user.first_name = request.form.get('first_name', user.first_name)
+        user.last_name = request.form.get('last_name', user.last_name)
+        user.email = new_email
+        user.phone_number = request.form.get('phone_number', user.phone_number)
+
+        # Save changes
+        db.session.commit()
+        flash('Profile updated successfully.', 'success')
+        return redirect(url_for('profile'))
+
+    full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
+    return render_template('profile.html', user=user, username=full_name)
+
+@app.route('/password', methods=['GET', 'POST'])
+def password():
     if "username" not in session:
         return redirect(url_for('login'))
+
+    user = User.query.filter_by(email=session['username']).first()
     
-    user = User.query.filter_by(Email=session['username']).first()
-    
-    if request.method == "POST":
-        user.first_name = request.form.get('first_name')
-        user.last_name = request.form.get('last_name')
-        user.Email = request.form.get('email')
-        user.phone_number = request.form.get('phone_number')
-        
+    if not user:
+        flash('User not found.', 'danger')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+        confirm_new_password = request.form['confirm_new_password']
+
+        if not user.check_password(current_password):
+            flash('Current password is incorrect.', 'danger')
+            return redirect(url_for('password'))
+
+        if new_password != confirm_new_password:
+            flash('New passwords do not match.', 'danger')
+            return redirect(url_for('password'))
+
+        user.set_password(new_password)
         db.session.commit()
-        return redirect(url_for('profile'))
-    
-    return render_template('profile.html', user=user)
+        flash('Password updated successfully.', 'success')
+        return redirect(url_for('dashboard'))
 
+    full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
+    return render_template('password.html', username=full_name)
 
-@app.route('/password')
-def password():
-    return render_template('password.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -129,10 +174,9 @@ def dashboard():
     if "username" in session:
         user = User.query.filter_by(email=session['username']).first()
         if user:
-            full_name = f"{user.first_name} {user.last_name}".strip()
+            full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
             return render_template("dashboard.html", username=full_name)
     return redirect(url_for('login'))
-
 
 @app.route("/logout")
 def logout():
