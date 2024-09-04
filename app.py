@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random
 from flask_mail import Mail, Message
 
+
 app = Flask(__name__)
 app.secret_key = "your secret key"
 app.config['SECRET_KEY'] = 'skdjhfskjdhf skdfjh sdkjfh'
@@ -122,6 +123,31 @@ def password():
 
     full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
     return render_template('password.html', username=full_name)
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '').lower()
+
+    # Define the available pages and their names
+    pages = {
+        'dashboard': 'dashboard',
+        'profile': 'profile',
+        'password': 'password',
+        'logout': 'logout',
+        'comparison': 'comparison',
+        'amortisation': 'ammortisation',
+        'share': 'share'
+    }
+
+    # Search logic: redirect to the matching page
+    for page_name, endpoint in pages.items():
+        if query in page_name:
+            return redirect(url_for(endpoint))
+
+    # If no match is found, render a search results page or show a message
+    flash('No matching pages found.', 'info')
+    return redirect(url_for('dashboard'))  # Default redirect, can be adjusted as needed
+
 
 
 

@@ -158,3 +158,8 @@
 .pricing-item.best {
     border: 4px solid green;
 }
+
+.input-fields {
+    position: absolute;
+    top: 150px;
+}

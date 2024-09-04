@@ -21,13 +21,16 @@
             </div>
 
             <div class="header-left">
-                <span class="material-symbols-outlined">search</span>
-                <span class="user-name">{{ username }}</span>
-            </div>
-            <div class="header-right">
                 <span class="material-symbols-outlined">notifications</span>
                 <span class="material-symbols-outlined">mail</span>
                 <span class="material-symbols-outlined">account_circle</span>
+            </div>
+
+            <div class="top-bar">
+                <form id="search-form" action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Search..." aria-label="Search" class="search-input">
+                    <button type="submit" class="search-button"><span class="material-symbols-outlined">search</span></button>
+                </form>
             </div>
         </header>
 
