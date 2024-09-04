@@ -32,8 +32,9 @@ class User(db.Model):
     first_name = db.Column(db.String(50), nullable=True)
     last_name = db.Column(db.String(50), nullable=True)
     phone_number = db.Column(db.String(20), nullable=True)
-    Email = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(150), nullable=False)
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -82,23 +83,24 @@ def password():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-
-        if not email or not password:
-            return render_template("signup.html", error="Please provide both email and password.")
-
-        user = User.query.filter_by(Email=email).first()
-        if user:
-            return render_template("signup.html", error="User already exists!")
-        else:
-            new_user = User(Email=email)
-            new_user.set_password(password)
-            db.session.add(new_user)
-            db.session.commit()
-            session['username'] = email
-            return redirect(url_for('dashboard'))
-
+        # Get the form data
+        email = request.form['email']
+        password = request.form['password']
+        name = request.form['name']
+        
+        # Split the name into first and last names
+        name_parts = name.split(' ', 1)
+        first_name = name_parts[0]
+        last_name = name_parts[1] if len(name_parts) > 1 else ''
+        
+        # Create new user instance with the correct email field
+        new_user = User(first_name=first_name, last_name=last_name, email=email)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+        
+        return redirect(url_for('dashboard'))
+    
     return render_template('signup.html')
 
 
@@ -125,7 +127,10 @@ def stepverification(usr):
 @app.route('/dashboard')
 def dashboard():
     if "username" in session:
-        return render_template("dashboard.html", username=session['username'])
+        user = User.query.filter_by(email=session['username']).first()
+        if user:
+            full_name = f"{user.first_name} {user.last_name}".strip()
+            return render_template("dashboard.html", username=full_name)
     return redirect(url_for('login'))
 
 
