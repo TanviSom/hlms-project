@@ -27,6 +27,16 @@ migrate = Migrate(app, db)
 def generate_otp(length=4):
     return ''.join([str(random.randint(0, 9)) for _ in range(length)])
 
+class LoanDetails(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Link to User
+    loan_amount = db.Column(db.Float, nullable=False)
+    tenure = db.Column(db.Integer, nullable=False)
+    tenure_type = db.Column(db.String(10), nullable=False)  # 'months' or 'years'
+    interest_rate = db.Column(db.Float, nullable=False)
+
+    user = db.relationship('User', backref='loans')
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -195,14 +205,70 @@ def stepverification(usr):
     return render_template('stepverification.html', usr=usr)
 
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=["GET", "POST"])
 def dashboard():
-    if "username" in session:
-        user = User.query.filter_by(email=session['username']).first()
-        if user:
-            full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
-            return render_template("dashboard.html", username=full_name)
-    return redirect(url_for('login'))
+    if "username" not in session:
+        return redirect(url_for('login'))  # If user is not logged in, redirect to login
+
+    user = User.query.filter_by(email=session['username']).first()
+
+    if not user:
+        session.pop('username', None)
+        return redirect(url_for('login'))  # Handle case where user does not exist in DB
+
+    loan_details = LoanDetails.query.filter_by(user_id=user.id).first()
+
+    if request.method == "POST":
+        # Retrieve form data
+        loan_amount = request.form.get('loan_amount')
+        tenure = request.form.get('tenure')
+        tenure_type = request.form.get('tenure_type')
+        interest_rate = request.form.get('interest_rate')
+
+        # Validate and convert form data
+        try:
+            loan_amount = float(loan_amount)
+        except ValueError:
+            flash('Loan amount must be a number.', 'danger')
+            return render_template("dashboard.html", user=user, loan_details=loan_details)
+
+        try:
+            tenure = int(tenure)
+        except ValueError:
+            flash('Tenure must be an integer.', 'danger')
+            return render_template("dashboard.html", user=user, loan_details=loan_details)
+
+        try:
+            interest_rate = float(interest_rate)
+        except ValueError:
+            flash('Interest rate must be a valid number.', 'danger')
+            return render_template("dashboard.html", user=user, loan_details=loan_details)
+
+        # Save or update loan details in the database
+        if loan_details:
+            # Update existing loan details
+            loan_details.loan_amount = loan_amount
+            loan_details.tenure = tenure
+            loan_details.tenure_type = tenure_type
+            loan_details.interest_rate = interest_rate
+        else:
+            # Create new loan details entry
+            loan_details = LoanDetails(
+                user_id=user.id,
+                loan_amount=loan_amount,
+                tenure=tenure,
+                tenure_type=tenure_type,
+                interest_rate=interest_rate
+            )
+            db.session.add(loan_details)
+
+        db.session.commit()
+        flash('Loan details saved successfully.', 'success')
+
+    # Fetch updated loan details to display in the dashboard
+    loan_details = LoanDetails.query.filter_by(user_id=user.id).first()
+
+    return render_template("dashboard.html", user=user, loan_details=loan_details)
 
 @app.route("/logout")
 def logout():

@@ -142,3 +142,16 @@ document.querySelector(".next").addEventListener("click", () => {
 });
 
 renderCalendar();
+
+
+    document.getElementById('months').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('years').checked = false;
+        }
+    });
+
+    document.getElementById('years').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('months').checked = false;
+        }
+    });
