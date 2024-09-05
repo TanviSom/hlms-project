@@ -8,12 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link
+      rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
 </head>
 <body>
-
     <div class="grid-container">
         <header class="header">
             <div class="menu-icon" onclick="openSidebar()">
@@ -66,41 +67,40 @@
                 <p class="font-weight-bold">DASHBOARD</p>
             </div>
 
+
+
+
+
+
             <div class="main-cards">
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">PRODUCTS</p>
-                        <span class="material-symbols-outlined">inventory_2</span>
+                <div class="container">
+                    <div class="calendar">
+                      <div class="month">
+                        <i class="fas fa-angle-left prev"></i>
+                        <div class="date">
+                          <h1></h1>
+                          <p></p>
+                        </div>
+                        <i class="fas fa-angle-right next"></i>
+                      </div>
+                      <div class="weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                      </div>
+                      <div class="days"></div>
                     </div>
-                    <span class="text-primary font-weight-bold">249</span>
-                </div>
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">PURCHASE ORDERS</p>
-                        <span class="material-symbols-outlined">add_shopping_cart</span>
-                    </div>
-                    <span class="text-primary font-weight-bold">83</span>
-                </div>
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">SALES ORDERS</p>
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </div>
-                    <span class="text-primary font-weight-bold">97</span>
-                </div>
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">INVENTORY ALERTS</p>
-                        <span class="material-symbols-outlined">notification_important</span>
-                    </div>
-                    <span class="text-primary font-weight-bold">34</span>
-                </div>
+                  </div>
             </div>
 
 
             <div class="charts">
                 <div class="chart-card">
-                    <p class="chart-title">Top 5 Products</p>
+                    <p class="chart-title">Graph</p>
                     <div id="bar-chart"></div>
                 </div>
 
@@ -110,9 +110,7 @@
                 </div>
             </div>
         </main>
-
     </div>
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.52.0/apexcharts.min.js"></script>
 

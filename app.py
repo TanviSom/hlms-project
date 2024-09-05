@@ -236,6 +236,7 @@ BANK_RATES = {
 }
 
 
+
 @app.route('/comparison', methods=['GET', 'POST'])
 def comparison():
     selected_banks = []
