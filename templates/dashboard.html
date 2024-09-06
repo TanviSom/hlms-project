@@ -34,7 +34,7 @@
         <aside id="sidebar">
             <div class="sidebar-title">
                 <div class="sidebar-brand">
-                    <span class="material-symbols-outlined">inventory</span> {{ username }}'s Inventory
+                    <span class="material-symbols-outlined">inventory</span> {{username }}'s Inventory
                 </div>
                 <span class="material-symbols-outlined" onclick="closeSidebar()">close</span>
             </div>
@@ -70,10 +70,10 @@
                         <div class="form-container">
                             <form method="POST" action="{{ url_for('dashboard') }}">
                                 <label for="loan-amount">Home Loan Amount:</label>
-                                <input type="text" id="loan-amount" name="loan_amount" value="{{ loan_details.loan_amount if loan_details else '' }}" placeholder="Enter loan amount">
+                                <input type="text" id="loan-amount" name="loan_amount" value="{{ loan_details.loan_amount if loan_details else '' }}" placeholder="Enter loan amount" required>
                                 
                                 <label for="tenure">Tenure:</label>
-                                <input type="text" id="tenure" name="tenure" value="{{ loan_details.tenure if loan_details else '' }}" placeholder="Enter tenure">
+                                <input type="text" id="tenure" name="tenure" value="{{ loan_details.tenure if loan_details else '' }}" placeholder="Enter tenure" required>
                                 
                                 <div class="tenure-checkbox">
                                     <input type="radio" id="months" name="tenure_type" value="months" {% if loan_details and loan_details.tenure_type == 'months' %}checked{% endif %}>
@@ -83,11 +83,23 @@
                                 </div>
                                 
                                 <label for="interest-rate">Interest Rate (%):</label>
-                                <input type="text" id="interest-rate" name="interest_rate" value="{{ loan_details.interest_rate if loan_details else '' }}" placeholder="Enter interest rate">
+                                <input type="text" step="0.01" id="interest-rate" name="interest_rate" value="{{ loan_details.interest_rate if loan_details else '' }}" placeholder="Enter interest rate" required>
                                 
                                 <button type="submit">Submit</button>
                             </form>
                         </div>
+                    </div>
+
+
+                    <div class="container2">
+                        <h1>Task Checklist</h1>
+                        <form id="task-form">
+                            <input type="text" id="task-input" placeholder="Enter a new task">
+                            <button type="submit">Add Task</button>
+                        </form>
+                        <ul id="task-list">
+                            <!-- Task items will be dynamically added here -->
+                        </ul>
                     </div>
 
                     <!-- Calendar Section -->
@@ -121,7 +133,6 @@
                 </div>
 
                 <div class="chart-card">
-                    <p class="chart-title">Purchase and Sales Orders</p>
                     <div id="area-chart"></div>
                 </div>
             </div>
@@ -130,5 +141,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.52.0/apexcharts.min.js"></script>
     <script src="/static/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 </body>
 </html>

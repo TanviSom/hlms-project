@@ -445,3 +445,88 @@ label {
     margin-bottom: 5px; 
     font-weight: bold;
 }
+
+/* CSS for the task checklist */
+.container2 {
+    margin-top: 20px;
+    left: 500px;
+    top: 350px;
+    position: absolute;
+}
+
+h1 {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+#task-form {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#task-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+}
+
+#task-form button {
+    width: 25%;
+    padding: 10px;
+    background: #cc0000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+#task-form button:hover {
+    background: #640303;
+}
+
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#task-list li {
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+}
+
+#task-list li.checked {
+    text-decoration: line-through;
+    color: #888;
+}
+
+#task-list .delete {
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#task-list .delete:hover {
+    background: #cc0000;
+}
