@@ -187,21 +187,6 @@ def signup():
 
 @app.route('/stepverification/<usr>', methods=['GET', 'POST'])
 def stepverification(usr):
-    if request.method == "POST":
-        entered_otp = request.form.get("otp")
-        if entered_otp == session.get('otp'):
-            return redirect(url_for('dashboard'))
-        else:
-            return render_template('stepverification.html', usr=usr, error="Invalid OTP.")
-
-    otp = generate_otp()
-    session['otp'] = otp
-
-    # Send the OTP via email
-    msg = Message('Your OTP Code', sender='homeloanmanagementsystemhmls@gmail.com', recipients=[usr])
-    msg.body = f'Your OTP code is {otp}. Please enter it to verify your account.'
-    mail.send(msg)
-
     return render_template('stepverification.html', usr=usr)
 
 
